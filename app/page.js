@@ -61,7 +61,7 @@ export default function Home() {
           </p>
           <ul className="mt-4 text-lg  text-neutral-400 flex flex-col gap-2">
             <Link
-              href="https://youtu.be/pLon_Mit7sk?si=spygOcVIAu2aEAoz"
+              href="https://youtu.be/pLon_Mit7sk?si=l5ILBMHdXyMftgwp"
               target="_blank"
               className="border-2 border-neutral-800 p-4 flex items-center justify-between gap-2 rounded-lg hover:border-neutral-600 transition-colors"
             >
