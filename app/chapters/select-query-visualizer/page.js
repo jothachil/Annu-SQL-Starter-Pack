@@ -1,8 +1,12 @@
 "use client";
 
-import { IconArrowNarrowLeft, IconPlayerPlay, IconRefresh } from "@tabler/icons-react";
+import {
+  IconArrowNarrowLeft,
+  IconPlayerPlay,
+  IconRefresh,
+} from "@tabler/icons-react";
 import Link from "next/link";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 
 const sampleData = [
   { id: 1, title: "Inception", year: 2010, genre: "Sci-Fi", rating: 8.8 },
@@ -18,35 +22,40 @@ const queries = [
     sql: "SELECT * FROM movies",
     columns: ["id", "title", "year", "genre", "rating"],
     filter: () => true,
-    description: "The asterisk (*) means 'give me all columns'. No WHERE clause means all rows are returned.",
+    description:
+      "The asterisk (*) means 'give me all columns'. No WHERE clause means all rows are returned.",
   },
   {
     name: "Pick Columns",
     sql: "SELECT title, year FROM movies",
     columns: ["title", "year"],
     filter: () => true,
-    description: "Instead of *, we list specific column names. Only 'title' and 'year' appear in the result.",
+    description:
+      "Instead of *, we list specific column names. Only 'title' and 'year' appear in the result.",
   },
   {
     name: "Filter Rows",
     sql: "SELECT * FROM movies WHERE genre = 'Sci-Fi'",
     columns: ["id", "title", "year", "genre", "rating"],
     filter: (row) => row.genre === "Sci-Fi",
-    description: "WHERE filters which rows to include. Only movies where genre equals 'Sci-Fi' pass through.",
+    description:
+      "WHERE filters which rows to include. Only movies where genre equals 'Sci-Fi' pass through.",
   },
   {
     name: "Columns + Filter",
     sql: "SELECT title, rating FROM movies WHERE year > 2000",
     columns: ["title", "rating"],
     filter: (row) => row.year > 2000,
-    description: "Combine both! Pick specific columns AND filter rows. Shows title & rating for movies after 2000.",
+    description:
+      "Combine both! Pick specific columns AND filter rows. Shows title & rating for movies after 2000.",
   },
   {
     name: "Multiple Conditions",
     sql: "SELECT title FROM movies WHERE rating > 8.7 AND year < 2010",
     columns: ["title"],
     filter: (row) => row.rating > 8.7 && row.year < 2010,
-    description: "Use AND to combine conditions. A row must match ALL conditions to be included in the result.",
+    description:
+      "Use AND to combine conditions. A row must match ALL conditions to be included in the result.",
   },
 ];
 
@@ -114,9 +123,8 @@ export default function SelectQueryVisualizer() {
     return "opacity-30";
   };
 
-  const filteredData = animationStep >= 2 
-    ? sampleData.filter(currentQuery.filter)
-    : sampleData;
+  const filteredData =
+    animationStep >= 2 ? sampleData.filter(currentQuery.filter) : sampleData;
 
   const allColumns = ["id", "title", "year", "genre", "rating"];
   const displayColumns = animationStep >= 3 ? currentQuery.columns : allColumns;
@@ -149,15 +157,16 @@ export default function SelectQueryVisualizer() {
             Choose Query
           </h2>
           <div className="flex gap-1.5 overflow-x-auto pb-2 -mx-4 px-4 sm:mx-0 sm:px-0 sm:flex-wrap scrollbar-hide">
-            {queries.map((query, index) => (
+            {queries.map((query) => (
               <button
-                key={index}
+                type="button"
+                key={query.name}
                 onClick={() => {
-                  setSelectedQuery(index);
+                  setSelectedQuery(queries.indexOf(query));
                   reset();
                 }}
-                className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all whitespace-nowrap shrink-0 ${
-                  selectedQuery === index
+                className={`px-4 py-4 rounded-lg text-sm font-medium transition-all whitespace-nowrap shrink-0 ${
+                  selectedQuery === queries.indexOf(query)
                     ? "bg-amber-500 text-neutral-900"
                     : "bg-neutral-800 text-neutral-300 hover:bg-neutral-700 active:bg-neutral-600"
                 }`}
@@ -170,33 +179,16 @@ export default function SelectQueryVisualizer() {
 
         {/* SQL Query Display */}
         <div className="bg-neutral-900 border border-neutral-800 rounded-lg p-3 sm:p-4 mb-5">
-          <div className="flex items-center justify-between gap-2 mb-3">
-            <span className="text-[10px] font-medium text-neutral-500 uppercase tracking-wider">
-              SQL
-            </span>
-            <div className="flex gap-1.5">
-              <button
-                onClick={reset}
-                className="flex items-center gap-1 px-2 py-1 rounded bg-neutral-800 text-neutral-300 hover:bg-neutral-700 active:bg-neutral-600 text-[10px] transition-colors"
-              >
-                <IconRefresh className="w-3 h-3" />
-                <span className="hidden sm:inline">Reset</span>
-              </button>
-              <button
-                onClick={runAnimation}
-                disabled={isAnimating}
-                className="flex items-center gap-1 px-2.5 py-1 rounded bg-emerald-600 text-white hover:bg-emerald-500 active:bg-emerald-400 text-[10px] font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                <IconPlayerPlay className="w-3 h-3" />
-                <span>Run</span>
-              </button>
-            </div>
-          </div>
-          <div className="overflow-x-auto -mx-3 px-3 sm:mx-0 sm:px-0">
+          <span className="text-[10px] font-medium text-neutral-500 uppercase tracking-wider">
+            SQL Query
+          </span>
+          <div className="overflow-x-auto mt-2">
             <code className="text-xs sm:text-sm font-mono whitespace-nowrap">
               <span className="text-fuchsia-400">SELECT</span>{" "}
               <span className="text-sky-400">
-                {currentQuery.columns.length === 5 ? "*" : currentQuery.columns.join(", ")}
+                {currentQuery.columns.length === 5
+                  ? "*"
+                  : currentQuery.columns.join(", ")}
               </span>{" "}
               <span className="text-fuchsia-400">FROM</span>{" "}
               <span className="text-amber-400">movies</span>
@@ -211,25 +203,46 @@ export default function SelectQueryVisualizer() {
               )}
             </code>
           </div>
+          <div className="flex gap-2 mt-4">
+            <button
+              type="button"
+              onClick={reset}
+              className="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg bg-neutral-800 text-neutral-300 hover:bg-neutral-700 active:bg-neutral-600 text-sm transition-colors"
+            >
+              <IconRefresh className="w-4 h-4" />
+              Reset
+            </button>
+            <button
+              type="button"
+              onClick={runAnimation}
+              disabled={isAnimating}
+              className="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg bg-emerald-600 text-white hover:bg-emerald-500 active:bg-emerald-400 text-sm font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              <IconPlayerPlay className="w-4 h-4" />
+              Run Query
+            </button>
+          </div>
         </div>
 
         {/* Animation Steps - Compact Progress */}
         <div className="mb-5">
           <div className="flex items-center gap-1">
-            {stepLabels.map((step, i) => (
-              <div key={i} className="flex-1 flex flex-col items-center">
+            {stepLabels.map((step, stepIndex) => (
+              <div key={step} className="flex-1 flex flex-col items-center">
                 <div
                   className={`w-6 h-6 sm:w-7 sm:h-7 rounded-full flex items-center justify-center text-[10px] sm:text-xs font-medium transition-all duration-300 ${
-                    animationStep >= i
+                    animationStep >= stepIndex
                       ? "bg-emerald-500 text-white"
                       : "bg-neutral-800 text-neutral-500"
                   }`}
                 >
-                  {i}
+                  {stepIndex}
                 </div>
                 <span
                   className={`text-[9px] sm:text-[10px] mt-1 transition-colors ${
-                    animationStep >= i ? "text-white" : "text-neutral-600"
+                    animationStep >= stepIndex
+                      ? "text-white"
+                      : "text-neutral-600"
                   }`}
                 >
                   {step}
@@ -239,7 +252,7 @@ export default function SelectQueryVisualizer() {
           </div>
           {/* Progress bar */}
           <div className="mt-2 h-1 bg-neutral-800 rounded-full overflow-hidden">
-            <div 
+            <div
               className="h-full bg-emerald-500 transition-all duration-500 ease-out"
               style={{ width: `${(animationStep / 4) * 100}%` }}
             />
@@ -279,14 +292,16 @@ export default function SelectQueryVisualizer() {
                           key={col}
                           className={`border border-neutral-700 px-1.5 sm:px-2 py-1 text-neutral-300 transition-all duration-300 whitespace-nowrap ${getColumnClass(col)}`}
                         >
-                          {col === "title" && row[col].length > 12 
-                            ? <span className="sm:hidden">{row[col].slice(0, 10)}...</span>
-                            : null
-                          }
-                          {col === "title" && row[col].length > 12 
-                            ? <span className="hidden sm:inline">{row[col]}</span>
-                            : row[col]
-                          }
+                          {col === "title" && row[col].length > 12 ? (
+                            <span className="sm:hidden">
+                              {row[col].slice(0, 10)}...
+                            </span>
+                          ) : null}
+                          {col === "title" && row[col].length > 12 ? (
+                            <span className="hidden sm:inline">{row[col]}</span>
+                          ) : (
+                            row[col]
+                          )}
                         </td>
                       ))}
                     </tr>
@@ -337,7 +352,8 @@ export default function SelectQueryVisualizer() {
                     </tbody>
                   </table>
                   <p className="mt-2 text-[10px] text-neutral-500">
-                    {filteredData.length} row{filteredData.length !== 1 ? "s" : ""} returned
+                    {filteredData.length} row
+                    {filteredData.length !== 1 ? "s" : ""} returned
                   </p>
                 </>
               ) : (
@@ -350,10 +366,14 @@ export default function SelectQueryVisualizer() {
         </div>
 
         {/* Explanation */}
-        <div className="bg-gradient-to-r from-amber-900/20 to-emerald-900/20 border border-amber-800/30 rounded-lg p-3">
-          <h3 className="text-white font-medium text-xs mb-1.5">💡 What's happening?</h3>
-          <p className="text-neutral-300 text-xs leading-relaxed">{currentQuery.description}</p>
-          
+        <div className="bg-linear-to-r from-amber-900/20 to-emerald-900/20 border border-amber-800/30 rounded-lg p-3">
+          <h3 className="text-white font-medium text-xs mb-1.5">
+            💡 What's happening?
+          </h3>
+          <p className="text-neutral-300 text-xs leading-relaxed">
+            {currentQuery.description}
+          </p>
+
           {animationStep > 0 && (
             <div className="mt-2 pt-2 border-t border-neutral-700/50">
               <p className="text-[10px] text-neutral-400">
@@ -366,31 +386,28 @@ export default function SelectQueryVisualizer() {
           )}
         </div>
 
-        {/* Quick Reference - Collapsible on Mobile */}
-        <details className="mt-5 group">
-          <summary className="p-3 bg-neutral-900/50 border border-neutral-800 rounded-lg cursor-pointer list-none">
-            <div className="flex items-center justify-between">
-              <h3 className="text-white font-medium text-xs">📚 SELECT Anatomy</h3>
-              <span className="text-neutral-500 text-xs group-open:rotate-180 transition-transform">▼</span>
+        {/* Quick Reference */}
+        <div className="mt-5 p-3 bg-neutral-900/50 border border-neutral-800 rounded-lg">
+          <h3 className="text-white font-medium text-xs mb-2">
+            📚 SELECT Anatomy
+          </h3>
+          <div className="font-mono text-[10px] sm:text-xs space-y-1.5">
+            <div className="flex items-start gap-2">
+              <span className="text-fuchsia-400 w-14 shrink-0">SELECT</span>
+              <span className="text-neutral-400">
+                → Which columns? (* = all)
+              </span>
             </div>
-          </summary>
-          <div className="mt-1 p-3 bg-neutral-900/50 border border-neutral-800 rounded-lg">
-            <div className="font-mono text-[10px] sm:text-xs space-y-1.5">
-              <div className="flex items-start gap-2">
-                <span className="text-fuchsia-400 w-14 shrink-0">SELECT</span>
-                <span className="text-neutral-400">→ Which columns? (* = all)</span>
-              </div>
-              <div className="flex items-start gap-2">
-                <span className="text-fuchsia-400 w-14 shrink-0">FROM</span>
-                <span className="text-neutral-400">→ Which table?</span>
-              </div>
-              <div className="flex items-start gap-2">
-                <span className="text-fuchsia-400 w-14 shrink-0">WHERE</span>
-                <span className="text-neutral-400">→ Filter rows (optional)</span>
-              </div>
+            <div className="flex items-start gap-2">
+              <span className="text-fuchsia-400 w-14 shrink-0">FROM</span>
+              <span className="text-neutral-400">→ Which table?</span>
+            </div>
+            <div className="flex items-start gap-2">
+              <span className="text-fuchsia-400 w-14 shrink-0">WHERE</span>
+              <span className="text-neutral-400">→ Filter rows (optional)</span>
             </div>
           </div>
-        </details>
+        </div>
 
         {/* Footer */}
         <div className="mt-10 pt-6 border-t border-neutral-800">
@@ -424,9 +441,6 @@ export default function SelectQueryVisualizer() {
           scrollbar-width: none;
         }
         .scrollbar-hide::-webkit-scrollbar {
-          display: none;
-        }
-        details summary::-webkit-details-marker {
           display: none;
         }
       `}</style>
