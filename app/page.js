@@ -40,6 +40,16 @@ export default function Home() {
               <IconArrowNarrowRightDashed className="w-6 h-6" />
             </Link>
             <Link
+              href="/chapters/select-query-visualizer"
+              className="border-2 border-neutral-800 p-4 flex items-center justify-between gap-2 rounded-lg hover:border-neutral-600 transition-colors"
+            >
+              <span className="flex items-center gap-3">
+                <IconPlayerPlay className="w-5 h-5" />
+                How SELECT Query Works (Interactive)
+              </span>
+              <IconArrowNarrowRightDashed className="w-6 h-6" />
+            </Link>
+            <Link
               href="https://sqlbolt.com/"
               target="_blank"
               className="border-2 border-neutral-800 p-4 flex items-center justify-between gap-2 rounded-lg hover:border-neutral-600 transition-colors"
