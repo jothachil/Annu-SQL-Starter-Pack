@@ -166,7 +166,7 @@ export default function SelectQueryVisualizer() {
                   setSelectedQuery(queries.indexOf(query));
                   reset();
                 }}
-                className={`px-4 py-4 rounded-lg text-sm font-medium transition-all whitespace-nowrap shrink-0 ${
+                className={`px-4 py-3 rounded-lg text-sm font-medium transition-all whitespace-nowrap shrink-0 ${
                   selectedQuery === queries.indexOf(query)
                     ? "bg-amber-500 text-neutral-900"
                     : "bg-neutral-800 text-neutral-300 hover:bg-neutral-700 active:bg-neutral-600"
