@@ -147,8 +147,9 @@ export default function SelectQueryVisualizer() {
         <h1 className="text-xl sm:text-2xl font-semibold text-white mb-1">
           How SELECT Works
         </h1>
-        <p className="text-neutral-400 text-sm mb-6">
-          Watch SQL retrieve data step-by-step
+        <p className="text-neutral-400  mb-6">
+          Select will be most used query as bussiness analyst. So I made a small
+          visualizer to help you understand how it works.
         </p>
 
         {/* Query Selector - Horizontal Scroll on Mobile */}
